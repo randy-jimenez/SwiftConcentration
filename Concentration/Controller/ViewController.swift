@@ -10,9 +10,7 @@ import UIKit
 import GameplayKit
 
 class ViewController: UIViewController {
-    let emojis: [String] = ["😹", "😻", "😼", "🙀", "😾", "😿"]
-    var cardValues: [String]!
-    var flippedCards: [UIButton] = []
+    var deck: CardDeck!
     var score: Int = 0 {
         didSet {
             scoreLabel.text = "Score: \(score)"
@@ -30,43 +28,19 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        cardValues = emojis + emojis
-        cardValues = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: cardValues) as! [String]
-    }
-
-    func flipCard(card: UIButton) {
-        if let senderIndex = cardButtons.index(of: card) {
-            card.setTitle(cardValues[senderIndex], for: .normal)
-            card.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-            flippedCards.append(card)
-            flipCount += 1
-        }
-    }
-
-    func unflipCard(card: UIButton) {
-        card.setTitle(nil, for: .normal)
-        card.backgroundColor = #colorLiteral(red: 1, green: 0.5781051517, blue: 0, alpha: 1)
+        deck = CardDeck(buttons: cardButtons)
     }
 
     @IBAction func cardButtonPressed(_ sender: UIButton) {
-        if flippedCards.count < 2 {
-            if sender.currentTitle == nil {
-                flipCard(card: sender)
-            } else {
-                unflipCard(card: sender)
-            }
+        if deck.flippedCards.count < 2 {
+            deck.flip(button: sender)
+            flipCount += 1
         }
-        if flippedCards.count == 2 {
-            if flippedCards[0].currentTitle == flippedCards[1].currentTitle {
+        if deck.flippedCards.count == 2 {
+            let didScore = deck.checkForMatch()
+
+            if didScore {
                 score += 1
-                flippedCards = []
-            } else {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    for card in self.flippedCards {
-                        self.unflipCard(card: card)
-                    }
-                    self.flippedCards = []
-                }
             }
         }
     }
