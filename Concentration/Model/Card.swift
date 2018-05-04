@@ -23,10 +23,6 @@ class Card {
     }
 
     func flip() {
-        if status == .faceDown {
-            status = .faceUp
-        } else {
-            status = .faceDown
-        }
+        status = status == .faceDown ? .faceUp : .faceDown
     }
 }
