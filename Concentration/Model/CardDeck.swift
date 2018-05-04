@@ -8,14 +8,16 @@
 
 import Foundation
 import GameplayKit
-import UIKit
 
 class CardDeck {
-    var cards: [UIButton: Card] = [:]
-    var flippedCards: [Card] = []
+    var cards: [Card] = []
+    var flippedCards: [Int] = []
+    var flipCount: Int = 0
+    var scoredCards: [Int] = []
+    var score: Int = 0
 
-    init(buttons: [UIButton]) {
-        let numEmojis = buttons.count / 2
+    init(numCards: Int) {
+        let numEmojis = numCards / 2
         var all_emojis: [String] = []
 
         for i in 0x1F601...0x1F64F {
@@ -28,34 +30,36 @@ class CardDeck {
         emojis = emojis + emojis
         emojis = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: emojis) as! [String]
 
-        for i in 0..<buttons.count{
-            let button = buttons[i]
+        for i in 0..<numCards{
             let emoji = emojis[i]
-            cards[button] = Card(cardButton: button, cardEmoji: emoji)
+            cards.append(Card(cardEmoji: emoji))
         }
     }
 
-    func flip(button: UIButton) {
-        if let card = cards[button] {
+    func getCard(at index: Int) -> Card {
+        return cards[index]
+    }
+
+    func flip(at index: Int) {
+        if scoredCards.index(of: index) != nil {
+            return
+        } else if flippedCards.index(of: index) != nil || flippedCards.count < 2 {
+            let card = getCard(at: index)
             card.flip()
+            flipCount += 1
+            
             if card.status == .faceUp {
-                flippedCards.append(card)
+                flippedCards.append(index)
+            } else {
+                flippedCards.remove(at: flippedCards.index(of: index)!)
             }
-        }
-    }
 
-    func checkForMatch() -> Bool {
-        if flippedCards[0].emoji == flippedCards[1].emoji {
-            flippedCards = []
-            return true
-        } else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                for card in self.flippedCards {
-                    self.flip(button: card.button)
-                }
-                self.flippedCards = []
+            if flippedCards.count == 2 && getCard(at: flippedCards[0]).emoji == getCard(at: flippedCards[1]).emoji {
+                score += 1
+                scoredCards.append(flippedCards[0])
+                scoredCards.append(flippedCards[1])
+                flippedCards = []
             }
-            return false
         }
     }
 }

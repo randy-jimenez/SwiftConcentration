@@ -10,17 +10,9 @@ import UIKit
 import GameplayKit
 
 class ViewController: UIViewController {
+    let cardColors: [CardStatus: UIColor] = [.faceUp: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0),
+                                             .faceDown: #colorLiteral(red: 1, green: 0.5781051517, blue: 0, alpha: 1)]
     var deck: CardDeck!
-    var score: Int = 0 {
-        didSet {
-            scoreLabel.text = "Score: \(score)"
-        }
-    }
-    var flipCount: Int = 0 {
-        didSet {
-            flipCountLabel.text = "Flips: \(flipCount)"
-        }
-    }
 
     @IBOutlet weak var flipCountLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
@@ -28,21 +20,39 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        deck = CardDeck(buttons: cardButtons)
+        deck = CardDeck(numCards: cardButtons.count)
+        updateUI()
+    }
+
+    func updateUI() {
+        for i in 0..<cardButtons.count {
+            let button = cardButtons[i]
+            let card = deck.getCard(at: i)
+
+            button.backgroundColor = cardColors[card.status]
+
+            if card.status == .faceUp {
+                button.setTitle(card.emoji, for: .normal)
+            } else {
+                button.setTitle(nil, for: .normal)
+            }
+        }
+        scoreLabel.text = "Score: \(deck.score)"
+        flipCountLabel.text = "Flips: \(deck.flipCount)"
     }
 
     @IBAction func cardButtonPressed(_ sender: UIButton) {
-        if deck.flippedCards.count < 2 {
-            deck.flip(button: sender)
-            flipCount += 1
-        }
-        if deck.flippedCards.count == 2 {
-            let didScore = deck.checkForMatch()
-
-            if didScore {
-                score += 1
+        deck.flip(at: cardButtons.index(of: sender)!)
+/*        else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                for index in self.flippedCards {
+                    self.flip(at: index)
+                }
+                self.flippedCards = []
             }
         }
+*/
+        updateUI()
     }
 }
 
