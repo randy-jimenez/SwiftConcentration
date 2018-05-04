@@ -67,7 +67,6 @@
 		25C1A524209947E700E6F581 /* Concentration */ = {
 			isa = PBXGroup;
 			children = (
-				25C1A531209947E900E6F581 /* Info.plist */,
 				259B8322209A80A4000008CD /* Model */,
 				25C1A53B209A7F1800E6F581 /* View */,
 				25C1A53A209A7F1100E6F581 /* Controller */,
@@ -81,6 +80,7 @@
 			children = (
 				25C1A525209947E700E6F581 /* AppDelegate.swift */,
 				25C1A52C209947E900E6F581 /* Assets.xcassets */,
+				25C1A531209947E900E6F581 /* Info.plist */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -322,7 +322,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5H9QJ9MVY8;
-				INFOPLIST_FILE = Concentration/Info.plist;
+				INFOPLIST_FILE = "Concentration/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -340,7 +340,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5H9QJ9MVY8;
-				INFOPLIST_FILE = Concentration/Info.plist;
+				INFOPLIST_FILE = "Concentration/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
