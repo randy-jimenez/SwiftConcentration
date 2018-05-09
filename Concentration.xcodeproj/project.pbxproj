@@ -78,7 +78,6 @@
 		25C1A5372099481200E6F581 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				25C1A525209947E700E6F581 /* AppDelegate.swift */,
 				25C1A52C209947E900E6F581 /* Assets.xcassets */,
 				25C1A531209947E900E6F581 /* Info.plist */,
 			);
@@ -88,6 +87,7 @@
 		25C1A53A209A7F1100E6F581 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				25C1A525209947E700E6F581 /* AppDelegate.swift */,
 				25C1A527209947E700E6F581 /* ViewController.swift */,
 			);
 			path = Controller;
