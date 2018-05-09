@@ -16,10 +16,11 @@ enum CardStatus {
 
 class Card {
     var status: CardStatus = .faceDown
+    var isMatched: Bool = false
     var emoji: String!
 
-    init(cardEmoji: String) {
-        emoji = cardEmoji
+    init(emoji: String) {
+        self.emoji = emoji
     }
 
     func flip() {

@@ -20,14 +20,14 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        deck = CardDeck(numCards: cardButtons.count)
+        deck = CardDeck(numPairs: cardButtons.count / 2)
         updateUI()
     }
 
     func updateUI() {
         for i in 0..<cardButtons.count {
             let button = cardButtons[i]
-            let card = deck.getCard(at: i)
+            let card = deck.cards[i]
 
             button.backgroundColor = cardColors[card.status]
 
