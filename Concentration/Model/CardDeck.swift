@@ -11,22 +11,17 @@ import GameplayKit
 
 class CardDeck {
     var cards: [Card] = []
+    //var cards: Array<Card> = []
     var flipCount: Int = 0
     var score: Int = 0
 
     init(numPairs: Int) {
-        var all_emojis: [String] = []
-
-        for i in 0x1F601...0x1F64F {
-            all_emojis.append(String(UnicodeScalar(i)!))
-        }
-
+        var all_emojis = (0x1F601...0x1F64F).map({ String(UnicodeScalar($0)!) })
         all_emojis = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: all_emojis) as! [String]
         let emojis = [String](all_emojis[..<numPairs])
 
         for emoji in emojis {
-            cards.append(Card(emoji: emoji))
-            cards.append(Card(emoji: emoji))
+            cards += [Card(emoji: emoji), Card(emoji: emoji)]
         }
 
         cards = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: cards) as! [Card]
@@ -38,8 +33,9 @@ class CardDeck {
 
     func flip(at index: Int) {
         let card = cards[index]
+        var flippedCards = getFlippedCards()
 
-        if card.isMatched {
+        if card.isMatched || (card.status == .faceDown && flippedCards.count == 2) {
             return
         }
 
@@ -47,8 +43,7 @@ class CardDeck {
         flipCount += 1
 
         if card.status == .faceUp {
-            let flippedCards = getFlippedCards()
-
+            flippedCards = getFlippedCards() 
             if flippedCards.count == 2 && flippedCards[0].emoji == flippedCards[1].emoji {
                 score += 1
                 flippedCards[0].isMatched = true
