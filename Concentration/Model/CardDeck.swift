@@ -10,8 +10,7 @@ import Foundation
 import GameplayKit
 
 class CardDeck {
-    var cards: [Card] = []
-    //var cards: Array<Card> = []
+    var cards = Array<Card>()//var cards = [Card]() //var cards: [Card] = [] //var cards: Array<Card> = []
     var flipCount: Int = 0
     var score: Int = 0
 
@@ -33,21 +32,20 @@ class CardDeck {
 
     func flip(at index: Int) {
         let card = cards[index]
-        var flippedCards = getFlippedCards()
 
-        if card.isMatched || (card.status == .faceDown && flippedCards.count == 2) {
-            return
-        }
+        if !card.isMatched {
+            if card.status == .faceUp || getFlippedCards().count < 2 {
+                card.flip()
+                flipCount += 1
 
-        card.flip()
-        flipCount += 1
-
-        if card.status == .faceUp {
-            flippedCards = getFlippedCards() 
-            if flippedCards.count == 2 && flippedCards[0].emoji == flippedCards[1].emoji {
-                score += 1
-                flippedCards[0].isMatched = true
-                flippedCards[1].isMatched = true
+                if card.status == .faceUp {
+                    let flippedCards = getFlippedCards()
+                    if flippedCards.count == 2 && flippedCards[0].emoji == flippedCards[1].emoji {
+                        score += 1
+                        flippedCards[0].isMatched = true
+                        flippedCards[1].isMatched = true
+                    }
+                }
             }
         }
     }
